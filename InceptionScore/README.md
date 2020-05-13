@@ -5,13 +5,14 @@ Papers
 
 
 ## Evaluating (Black-Box) Generative Models
-Generative Adversarial Networks lack an objective function, which makes it difficult to compare performance of different models. 
+In contrast to supervised learning, Generative Adversarial Networks lack an objective function that measures "What is realistic?", which makes it difficult to compare performance of different models. 
+
 
 Why is it so hard?
 - The real data distribution p(x) is unknown
 - The explicit generative distribution q(x) is unknown. (ex. GANs uses random noise vectors for the latent variable)
 
-Some metrics for the evaluation of generative models
+## Some previous metrics for the evaluation of generative models
 - To approximate density function over generated samples and then calculate the likelihood of held-out samples
 - To apply a pre-trained neural network to generated images and calculate statistics of its output or at a particular hidden layer.(Inception Score approach)
 - Use a crowd-sourcing platform (Amazon Mechanical Turk) to evaluate a large number of GAN generated images. 
@@ -21,10 +22,15 @@ The **Inception Score** is a metric for automatically evalutating the quality of
 
 The Inception Score uses an Inception v3 Network pre-trained on ImageNet and calculates a statistic of the network's outputs when applied to generated images. The probability of the image belonging to each class is predicted and then, theses predictions are summarized into the Inception Score.
 
-Criterions
+### Criterions
 - Image Quality : The generated image should be sharp rather than blurry
 - p(y|x) should be low entropy : the inception network should be highly confident there is a single object in the image
 - Image Diversity : p(y) should be high entropy. (the generative algorithm should output a high diversity of images)
+
+informally,
+- Every realistic image should be recognizable, which means that the score distribution for it must be, ideally, dominated by one class.(The entropy of image-wise class distributions, p(y|x) should have low entropy)
+- Class distribution over the whole sample should be as close to uniform as possible, in other words, a good generator is a diverse generator.(The entropy of the overall distribution,which is p(y), should be high)
+
 
 How to Calculate?
 KL divergence = p(y|x) * (log(p(y|x)) – log(p(y)))
